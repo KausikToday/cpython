@@ -1,19 +1,18 @@
-:mod:`binascii` --- Convert between binary and ASCII
-====================================================
+:mod:`!binascii` --- Convert between binary and ASCII
+=====================================================
 
 .. module:: binascii
    :synopsis: Tools for converting between binary and various ASCII-encoded binary
               representations.
 
 .. index::
-   pair: module; uu
    pair: module; base64
 
 --------------
 
 The :mod:`binascii` module contains a number of methods to convert between
 binary and various ASCII-encoded binary representations. Normally, you will not
-use these functions directly but use wrapper modules like :mod:`uu` or
+use these functions directly but use wrapper modules like
 :mod:`base64` instead. The :mod:`binascii` module contains
 low-level functions written in C for greater speed that are used by the
 higher-level modules.
@@ -58,23 +57,33 @@ The :mod:`binascii` module defines the following functions:
    data will raise :exc:`binascii.Error`.
 
    Valid base64:
-      * Conforms to :rfc:`3548`.
-      * Contains only characters from the base64 alphabet.
-      * Contains no excess data after padding (including excess padding, newlines, etc.).
-      * Does not start with a padding.
+
+   * Conforms to :rfc:`4648`.
+   * Contains only characters from the base64 alphabet.
+   * Contains no excess data after padding (including excess padding, newlines, etc.).
+   * Does not start with a padding.
 
    .. versionchanged:: 3.11
       Added the *strict_mode* parameter.
 
 
-.. function:: b2a_base64(data, *, newline=True)
+.. function:: b2a_base64(data, *, wrapcol=0, newline=True)
 
-   Convert binary data to a line of ASCII characters in base64 coding. The return
-   value is the converted line, including a newline char if *newline* is
-   true.  The output of this function conforms to :rfc:`3548`.
+   Convert binary data to a line(s) of ASCII characters in base64 coding,
+   as specified in :rfc:`4648`.
+
+   If *wrapcol* is non-zero, insert a newline (``b'\n'``) character
+   after at most every *wrapcol* characters.
+   If *wrapcol* is zero (default), do not insert any newlines.
+
+   If *newline* is true (default), a newline character will be added
+   at the end of the output.
 
    .. versionchanged:: 3.6
       Added the *newline* parameter.
+
+   .. versionchanged:: 3.15
+      Added the *wrapcol* parameter.
 
 
 .. function:: a2b_qp(data, header=False)
@@ -178,9 +187,6 @@ The :mod:`binascii` module defines the following functions:
    Module :mod:`base64`
       Support for RFC compliant base64-style encoding in base 16, 32, 64,
       and 85.
-
-   Module :mod:`uu`
-      Support for UU encoding used on Unix.
 
    Module :mod:`quopri`
       Support for quoted-printable encoding used in MIME email messages.
